@@ -1,0 +1,14 @@
+version: "3.3"
+services:
+  kylin-api:
+    image: kylinnetwork/kylin-api:latest
+    ports:
+      - "8080:8080"
+    restart: always
+    container_name: kylin-api
+    volumes:
+      - ./api:/app/api
+      - ./wsgi.py:/app/wsgi.py
+      - ./bin:/app/bin
+volumes:
+  app:
