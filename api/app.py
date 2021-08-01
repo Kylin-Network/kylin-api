@@ -7,12 +7,7 @@ app = Flask(__name__)
 app.register_blueprint(errors)
 oracle_framework = OracleFramework()
 
-@app.route("/")
-def index():
-    return Response("Hello, world!", status=200)
-
-
-@app.route("/api/prices")
+@app.route("/prices")
 def prices():
     currency_pairs = request.args['currency_pairs']
     prices = oracle_framework.get_prices(currency_pairs)
