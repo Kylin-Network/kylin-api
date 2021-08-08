@@ -8,4 +8,4 @@ class CryptoCompare(GenericSource):
         super().__init__(self.url,self.source_name)
 
     def get_prices(self,currency_pairs):
-        return super().get_price(currency_pairs)
+        return super().get_prices(currency_pairs)
