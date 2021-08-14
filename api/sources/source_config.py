@@ -11,12 +11,24 @@ sources = dict(
     source_name = "cryptocompare",
     url = "https://min-api.cryptocompare.com/data/price?fsym=FROM_CURRENCY&tsyms=TO_CURRENCY",
   ),
-  binance = dict(
-    source_name = "cryptocompare",
-    url = "https://api.binance.com/api/v3/ticker/price?symbol=FROM_CURRENCYTO_CURRENCY",
-  ),
   cryptowatch = dict(
     source_name = "cryptowatch",
     url = "https://api.cryptowat.ch/markets/prices",
+  ),
+  bancor = dict(
+    source_name = "bancor",
+    url = "https://api-v2.bancor.network/tokens",
+  ),
+  kraken = dict(
+    source_name = "kraken",
+    url = "https://api.cryptowat.ch/markets/kraken/FROM_CURRENCYTO_CURRENCY/price",
+  ),
+ bitfinex = dict(
+    source_name = "bitfinex",
+    url = "https://api.cryptowat.ch/markets/bitfinex/FROM_CURRENCYTO_CURRENCY/price",
+  ),
+ binance = dict(
+    source_name = "binance",
+    url = "https://api.binance.com/api/v3/ticker/price?symbol=FROM_CURRENCYTO_CURRENCY",
   ),
 )

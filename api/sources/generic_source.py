@@ -1,9 +1,8 @@
 from flask import jsonify, make_response
 import requests
 from datetime import datetime
-from abc import ABCMeta, abstractmethod
 
-class GenericSource(metaclass=ABCMeta):
+class GenericSource:
     
     def __init__(self,url,source_name):
         self.template_url = url
@@ -12,8 +11,7 @@ class GenericSource(metaclass=ABCMeta):
     def get_source_name(self):
         return self.source_name
 
-    @abstractmethod
-    def get_prices(self,currency_pairs):
+    def get_price(self,currency_pairs):
         full_response = {}
         full_response[self.source_name] = {}
         for currency_pair in currency_pairs.split(","):

@@ -1,6 +1,13 @@
 from api.sources.cryptocompare import CryptoCompare
 from api.sources.cryptowatch import CryptoWatch
+from api.sources.bancor import Bancor
 from api.sources.coingecko import CoinGecko
+from api.sources.coinbase import Coinbase
+from api.sources.binance import Binance
+from api.sources.bitfinex import Bitfinex
+from api.sources.kraken import Kraken
+
+
 from flask import jsonify, make_response
 from datetime import datetime
 import logging
@@ -9,7 +16,7 @@ import traceback
 class OracleFramework:
 
     def get_prices(self,currency_pairs):
-        sources = {CoinGecko,CryptoCompare,CryptoWatch}
+        sources = {CoinGecko,CryptoCompare,CryptoWatch,Bancor,Coinbase,Binance,Kraken,Bitfinex}
         full_response = {}
         full_response['sources'] = {}
         full_response['started_at'] = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
