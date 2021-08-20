@@ -19,7 +19,6 @@ oracle_framework = OracleFramework()
 @api.route('/prices', endpoint='prices')
 @api.param('currency_pairs', 'the currency_pairs')
 class PriceList(Resource):
-    # @api.marshal_with(response_fields, code=200)
     def get(self):
         currency_pairs = request.args['currency_pairs']
         prices = oracle_framework.get_prices(currency_pairs)
