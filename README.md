@@ -52,3 +52,22 @@ Then from the root directory, run:
 pytest
 ```
 This runs `tests/test_api.py` which contains test functions.
+
+## Accessing the Swagger 
+Make sure the application is running in your local. 
+
+The swagger endpoint is mapped to the `/swagger`
+
+You can see the API specifictaion and the try your application directly from the swagger ui in the browser.
+
+Go to the browser and paste the following
+
+```bash
+http://localhost:8080/swagger
+```
+
+You will be able to see the default namespace,click there and you can see the list of the endpoints available
+play through it using the try_out button
+
+
+
