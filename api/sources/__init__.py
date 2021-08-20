@@ -1,2 +1,2 @@
-# __all__ = ['coingecko', 'cryptocompare', 'cryptowatch']
+# __all__ = ['coingecko', 'cryptocompare', 'cryptowatch','bancor']
 # from .app import sources
