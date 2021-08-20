@@ -14,21 +14,6 @@ api = Api(
     description='The API to provide the price feeds for the currency pairs from different sources(coingecko, coinbase, kraken, cryptowatch, etc)',
 )
 
-# full_response = {}
-# full_response['sources'] = {}
-# full_response['started_at'] = str
-# full_response['completed_at'] = str
-
-# response_fields = api.model('Resource', {
-#     'completed_at': fields.String,
-#     'sources': fields.Nested({
-#         "coingecko": fields.String,
-#         "coinbase": fields.String
-#     }),
-#     'started_at': fields.String,
-# })
-
-
 oracle_framework = OracleFramework()
 
 @api.route('/prices', endpoint='prices')
