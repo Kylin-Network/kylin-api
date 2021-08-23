@@ -17,8 +17,10 @@ class CoinGecko(GenericSource):
         for currency_pair in currency_pairs.split(","):
             from_currency_symbol = currency_pair.split("_")[0]
             to_currency_symbol = currency_pair.split("_")[1]
-            from_currency_id = [coin for coin in all_coins if coin['symbol'] == from_currency_symbol.lower()][0]['id']
-            response = requests.get(self.url.replace("FROM_CURRENCY",from_currency_id).replace("TO_CURRENCY",to_currency_symbol)).json()
+            filtered_currency = filter(lambda x: x["symbol"]==from_currency_symbol.lower(), all_coins)
+            filtered_currency = self.has_next(filtered_currency)
+            if filtered_currency is None: continue
+            response = requests.get(self.url.replace("FROM_CURRENCY",filtered_currency["id"]).replace("TO_CURRENCY",to_currency_symbol)).json()
             current_timestamp = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
             full_response[self.source_name][currency_pair] = {"processed_at":current_timestamp,"source":self.source_name, "payload":response}
         return full_response

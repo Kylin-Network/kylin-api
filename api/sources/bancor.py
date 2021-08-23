@@ -8,15 +8,17 @@ class Bancor(GenericSource):
         self.url = source_config.sources["bancor"]['url']
         self.source_name = source_config.sources["bancor"]['source_name']
         super().__init__(self.url,self.source_name)
+        
     def get_prices(self,currency_pairs):
         full_response = {}
         full_response[self.source_name] = {}
-        rates = requests.get(self.url).json()
-        ratesList = rates['data']
-        print ('Hariom')
+        all_markets = requests.get(self.url).json()
         for currency_pair in currency_pairs.split(","):
-            from_currency_symbol = currency_pair.split("_")[0]                  
-            response = [rate for rate in ratesList if rate['symbol'] == from_currency_symbol.upper()][0]['price']
+            from_currency_symbol = currency_pair.split("_")[0]
+            filtered_currency = filter(lambda x: from_currency_symbol.upper()==x["symbol"], all_markets["data"])
+            response = self.has_next(filtered_currency)
+            if response is None: continue
+            response = response["price"]
             current_timestamp = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
-            full_response[self.source_name][currency_pair] = {"processed_at":current_timestamp,"source":currency_pairs, "payload":response}
+            full_response[self.source_name][currency_pair] = {"processed_at":current_timestamp,"source":self.source_name, "payload":response}
         return full_response    
