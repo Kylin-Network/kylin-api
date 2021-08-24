@@ -21,6 +21,10 @@ class CoinGecko(GenericSource):
             filtered_currency = self.has_next(filtered_currency)
             if filtered_currency is None: continue
             response = requests.get(self.url.replace("FROM_CURRENCY",filtered_currency["id"]).replace("TO_CURRENCY",to_currency_symbol)).json()
+            if (filtered_currency["id"] in response) and (to_currency_symbol.lower() in response[filtered_currency["id"]]):
+                price = float(response[filtered_currency["id"]][to_currency_symbol.lower()])
+            else:
+                continue
             current_timestamp = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
-            full_response[self.source_name][currency_pair] = {"processed_at":current_timestamp,"source":self.source_name, "payload":response}
+            full_response[self.source_name][currency_pair] = {"processed_at":current_timestamp,"source":self.source_name, "payload":price}
         return full_response

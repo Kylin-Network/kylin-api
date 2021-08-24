@@ -16,8 +16,8 @@ class CryptoWatch(GenericSource):
         full_response[self.source_name] = {}
         for currency_pair in currency_pairs.split(","):
             filtered_currencies = filter(lambda x: currency_pair.replace("_","") in x[0], all_markets["result"].items())
-            filtered_currencies = {key:value for (key,value) in filtered_currencies}
-            if filtered_currencies == {}: continue
+            response = {key:value for (key,value) in filtered_currencies}
+            if response == {}: continue
             current_timestamp = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
-            full_response[self.source_name][currency_pair] = {"processed_at":current_timestamp,"source":self.source_name, "payload":filtered_currencies}
+            full_response[self.source_name][currency_pair] = {"processed_at":current_timestamp,"source":self.source_name, "payload":response}
         return full_response

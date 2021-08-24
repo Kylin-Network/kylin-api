@@ -1,5 +1,7 @@
 from api.sources import source_config
 from api.sources.generic_source import GenericSource
+import requests
+from datetime import datetime
 
 class Coinbase(GenericSource):
     def __init__(self):
@@ -8,4 +10,17 @@ class Coinbase(GenericSource):
         super().__init__(self.url,self.source_name)
 
     def get_prices(self,currency_pairs):
-        return super().get_price(currency_pairs)
+        full_response = {}
+        full_response[self.source_name] = {}
+        for currency_pair in currency_pairs.split(","):
+            from_currency_symbol = currency_pair.split("_")[0]
+            to_currency_symbol = currency_pair.split("_")[1]
+            url = self.url.replace("FROM_CURRENCY",from_currency_symbol).replace("TO_CURRENCY",to_currency_symbol)
+            response = requests.get(url).json()
+            if "price" in response:
+                price = float(response["price"])
+            else:
+                continue
+            current_timestamp = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+            full_response[self.source_name][currency_pair] = {"processed_at":current_timestamp,"source":self.source_name, "payload":price}
+        return full_response
