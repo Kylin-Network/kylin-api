@@ -1,9 +1,7 @@
-from flask import jsonify, make_response
 import requests
 from datetime import datetime
 
 class GenericSource:
-    
     def __init__(self,url,source_name):
         self.template_url = url
         self.source_name = source_name
@@ -17,7 +15,16 @@ class GenericSource:
         except StopIteration:
             return None
         return first
-        
+    
+    def is_valid_currency_pair(self, currency_pair):
+        split_currencies = currency_pair.split("_")
+        if len(split_currencies) != 2: return False
+        rules = [
+            split_currencies[0].isalpha(),
+            split_currencies[1].isalpha(),
+        ]
+        return True if all(rules) else False
+
     def get_price(self,currency_pairs):
         full_response = {}
         full_response[self.source_name] = {}
