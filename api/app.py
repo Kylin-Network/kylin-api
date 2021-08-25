@@ -15,7 +15,7 @@ class PriceList(Resource):
         if oracle_framework.has_results(prices):
             return make_response(prices, 200)
         else:
-            raise InvalidCurrencyPair("We didn't find any results for your query. Ensure you are using valid currency symbols with format: '<FROM-CURRENCY>_<TO-CURRENCY>'. If passing multiple currency pairs, separate them with commas. Example: btc_usd,eth_gbp,kyl_jpy")
+            raise InvalidCurrencyPair
 
 @api.route('/health', endpoint='health')
 class HealthList(Resource):
