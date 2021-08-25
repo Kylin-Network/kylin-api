@@ -8,7 +8,6 @@ import logging
 import traceback
 
 class OracleFramework:
-
     def get_prices(self,currency_pairs):
         sources = {CoinGecko,CryptoCompare,CryptoWatch,Bancor,Coinbase,}
         full_response = {}
@@ -22,3 +21,8 @@ class OracleFramework:
                 logging.error(traceback.format_exc())
         full_response['completed_at'] = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
         return full_response
+
+    def has_results(self, full_response):
+        for source_response in full_response["sources"].values():
+            if source_response: return True
+        return False

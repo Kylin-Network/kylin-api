@@ -1,8 +1,5 @@
-from flask import Blueprint, Response
-
-errors = Blueprint("errors", __name__)
-
-
-@errors.app_errorhandler(Exception)
-def server_error(error):
-    return Response(f"Oops, got an error! {error}", status=500)
+class InvalidCurrencyPair(Exception):
+    def __init__(self, message, status_code=400):
+        super().__init__(message)
+        self.status_code = status_code
+        
