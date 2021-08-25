@@ -23,6 +23,9 @@ class OracleFramework:
         return full_response
 
     def has_results(self, full_response):
+        """
+        Function used to determine if object returned from OracleFramework.get_prices() returns actual price data or empty dictionaries
+        """
         for source_response in full_response["sources"].values():
             if source_response: return True
         return False

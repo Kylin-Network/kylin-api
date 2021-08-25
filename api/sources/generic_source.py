@@ -22,6 +22,9 @@ class GenericSource:
         return full_response
 
     def _has_next(self, generator:object):
+        """
+        Helper function used to determine if a generator object contains a value or is empty
+        """
         try:
             first = next(generator)
         except StopIteration:
@@ -29,6 +32,9 @@ class GenericSource:
         return first
     
     def _is_valid_currency_pair(self, currency_pair):
+        """
+        Helper function used to check if currency_pair is valid format
+        """
         split_currencies = currency_pair.split("_")
         if len(split_currencies) != 2: return False
         rules = [
