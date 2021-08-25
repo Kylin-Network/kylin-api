@@ -14,8 +14,8 @@ class CryptoCompare(GenericSource):
         full_response[self.source_name] = {}
         for currency_pair in currency_pairs.split(","):
             if not self._is_valid_currency_pair(currency_pair): continue
-            from_currency_symbol = currency_pair.split("_")[0]
-            to_currency_symbol = currency_pair.split("_")[1]
+            from_currency_symbol = currency_pair.split("_")[0].strip()
+            to_currency_symbol = currency_pair.split("_")[1].strip()
             url = self.template_url.replace("FROM_CURRENCY",from_currency_symbol).replace("TO_CURRENCY",to_currency_symbol)
             response = requests.get(url).json()
             if to_currency_symbol.upper() in response:

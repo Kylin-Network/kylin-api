@@ -13,8 +13,8 @@ class GenericSource:
         full_response = {}
         full_response[self.source_name] = {}
         for currency_pair in currency_pairs.split(","):
-            from_currency = currency_pair.split("_")[0]
-            to_currency = currency_pair.split("_")[1]
+            from_currency = currency_pair.split("_")[0].strip()
+            to_currency = currency_pair.split("_")[1].strip()
             url = self.template_url.replace("FROM_CURRENCY",from_currency).replace("TO_CURRENCY",to_currency)
             response = requests.get(url).json()
             current_timestamp = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
@@ -38,8 +38,8 @@ class GenericSource:
         split_currencies = currency_pair.split("_")
         if len(split_currencies) != 2: return False
         rules = [
-            split_currencies[0].isalpha(),
-            split_currencies[1].isalpha(),
+            split_currencies[0].strip().isalpha(),
+            split_currencies[1].strip().isalpha(),
         ]
         return True if all(rules) else False
         

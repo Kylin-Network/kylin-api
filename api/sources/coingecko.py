@@ -16,8 +16,8 @@ class CoinGecko(GenericSource):
         all_coins = requests.get(symbol_lookup_url).json()
         for currency_pair in currency_pairs.split(","):
             if not self._is_valid_currency_pair(currency_pair): continue
-            from_currency_symbol = currency_pair.split("_")[0]
-            to_currency_symbol = currency_pair.split("_")[1]
+            from_currency_symbol = currency_pair.split("_")[0].strip()
+            to_currency_symbol = currency_pair.split("_")[1].strip()
             filtered_currency = filter(lambda x: x["symbol"]==from_currency_symbol.lower(), all_coins)
             filtered_currency = self._has_next(filtered_currency)
             if filtered_currency is None: continue

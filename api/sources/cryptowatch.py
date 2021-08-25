@@ -16,7 +16,7 @@ class CryptoWatch(GenericSource):
         full_response[self.source_name] = {}
         for currency_pair in currency_pairs.split(","):
             if not self._is_valid_currency_pair(currency_pair): continue
-            filtered_currencies = filter(lambda x: currency_pair.replace("_","") in x[0], all_markets["result"].items())
+            filtered_currencies = filter(lambda x: currency_pair.replace("_","").strip() in x[0], all_markets["result"].items())
             response = {key:value for (key,value) in filtered_currencies}
             if response == {}: continue
             current_timestamp = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
