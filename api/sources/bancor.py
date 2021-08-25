@@ -14,12 +14,12 @@ class Bancor(GenericSource):
         full_response[self.source_name] = {}
         all_markets = requests.get(self.url).json()
         for currency_pair in currency_pairs.split(","):
-            if not self.is_valid_currency_pair(currency_pair): continue
+            if not self._is_valid_currency_pair(currency_pair): continue
             from_currency_symbol = currency_pair.split("_")[0]
             to_currency_symbol = currency_pair.split("_")[1]
             if "usd" not in to_currency_symbol.lower(): continue # bancor only supports usd
             filtered_currency = filter(lambda x: from_currency_symbol.upper()==x["symbol"], all_markets["data"])
-            response = self.has_next(filtered_currency)
+            response = self._has_next(filtered_currency)
             if response is None:
                 continue
             else:

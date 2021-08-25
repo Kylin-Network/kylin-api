@@ -15,11 +15,11 @@ class CoinGecko(GenericSource):
         symbol_lookup_url = self.url.replace("simple/price?ids=FROM_CURRENCY&vs_currencies=TO_CURRENCY","coins/list/")
         all_coins = requests.get(symbol_lookup_url).json()
         for currency_pair in currency_pairs.split(","):
-            if not self.is_valid_currency_pair(currency_pair): continue
+            if not self._is_valid_currency_pair(currency_pair): continue
             from_currency_symbol = currency_pair.split("_")[0]
             to_currency_symbol = currency_pair.split("_")[1]
             filtered_currency = filter(lambda x: x["symbol"]==from_currency_symbol.lower(), all_coins)
-            filtered_currency = self.has_next(filtered_currency)
+            filtered_currency = self._has_next(filtered_currency)
             if filtered_currency is None: continue
             response = requests.get(self.url.replace("FROM_CURRENCY",filtered_currency["id"]).replace("TO_CURRENCY",to_currency_symbol)).json()
             if (filtered_currency["id"] in response) and (to_currency_symbol.lower() in response[filtered_currency["id"]]):

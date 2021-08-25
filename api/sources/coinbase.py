@@ -13,7 +13,7 @@ class Coinbase(GenericSource):
         full_response = {}
         full_response[self.source_name] = {}
         for currency_pair in currency_pairs.split(","):
-            if not self.is_valid_currency_pair(currency_pair): continue
+            if not self._is_valid_currency_pair(currency_pair): continue
             from_currency_symbol = currency_pair.split("_")[0]
             to_currency_symbol = currency_pair.split("_")[1]
             url = self.url.replace("FROM_CURRENCY",from_currency_symbol).replace("TO_CURRENCY",to_currency_symbol)
