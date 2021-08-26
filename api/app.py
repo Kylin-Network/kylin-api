@@ -1,9 +1,11 @@
-from flask import make_response, Response, request
+from flask import Flask, make_response, Response, request
 from flask_restx import Resource
 from api.oracle_framework import OracleFramework
-from api.restx import api, app
-from api.errors import InvalidCurrencyPair
+from api.errors.exceptions import InvalidQuery
+from .api import api
 
+app = Flask(__name__)
+api.init_app(app)
 oracle_framework = OracleFramework()
 
 @api.route('/prices', endpoint='prices')
@@ -15,13 +17,12 @@ class PriceList(Resource):
         if oracle_framework.has_results(prices):
             return make_response(prices, 200)
         else:
-            raise InvalidCurrencyPair
+            raise InvalidQuery(payload=currency_pairs)
 
 @api.route('/health', endpoint='health')
 class HealthList(Resource):
     def get(self):
         return Response("OK", status=200)
-
 
 if __name__ == "__main__":
     app.run()
