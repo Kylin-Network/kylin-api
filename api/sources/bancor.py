@@ -25,5 +25,5 @@ class Bancor(GenericSource):
             else:
                 price = float(response["price"]["usd"])
             current_timestamp = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
-            full_response[self.source_name][currency_pair] = {"processed_at":current_timestamp,"source":self.source_name, "payload":price}
+            full_response[self.source_name][currency_pair.strip().lower()] = {"processed_at":current_timestamp,"source":self.source_name, "payload":price}
         return full_response    

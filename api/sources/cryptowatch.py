@@ -20,5 +20,5 @@ class CryptoWatch(GenericSource):
             response = {key:value for (key,value) in filtered_currencies}
             if response == {}: continue
             current_timestamp = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
-            full_response[self.source_name][currency_pair] = {"processed_at":current_timestamp,"source":self.source_name, "payload":response}
+            full_response[self.source_name][currency_pair.strip().lower()] = {"processed_at":current_timestamp,"source":self.source_name, "payload":response}
         return full_response
