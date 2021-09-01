@@ -10,7 +10,7 @@ from .api import api
 app = Flask(__name__)
 cors = CORS(app)
 app.config['CORS_HEADERS'] = 'Content-Type'
-app.wsgi_app = ProxyFix(app.wsgi_app)
+app.wsgi_app = ProxyFix(app.wsgi_app, x_proto=1)
 
 api.init_app(app)
 oracle_framework = OracleFramework()
