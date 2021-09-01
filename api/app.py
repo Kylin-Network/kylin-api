@@ -1,10 +1,14 @@
 from flask import Flask, make_response, Response, request
+from flask_cors import CORS
 from flask_restx import Resource
 from api.oracle_framework import OracleFramework
 from api.errors.exceptions import InvalidQuery
 from .api import api
 
 app = Flask(__name__)
+cors = CORS(app)
+app.config['CORS_HEADERS'] = 'Content-Type'
+
 api.init_app(app)
 oracle_framework = OracleFramework()
 
