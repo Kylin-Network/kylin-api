@@ -11,19 +11,19 @@ def test_health(client):
     assert client.get("/health").status_code == 200
 
 def test_price_valid_query(client):
-    pairs = "btc_usd,eth_gbp,dot_aud,ksm_jpy,kyl_btc"
+    pairs = " btc_usd ,ETH_GBP,kyl_aud"
     assert client.get(f"/prices?currency_pairs={pairs}").status_code == 200
 
 def test_price_invalid_query_1(client):
-    pairs = ".btc_usd,None_Btc,do_t_eth,eth,log.an,"
-    assert client.get(f"/prices?currency_pairs={pairs}").status_code == 200
+    pairs = ".btc_usd,None_Btc,do_t_eth,eth,tes.ting,"
+    assert client.get(f"/prices?currency_pairs={pairs}").status_code == 400
 
 def test_price_invalid_query_2(client):
-    pairs = ",KYL_uSd,wbt*c_eur,, ksm_DOT ,bt!c_usd"
-    assert client.get(f"/prices?currency_pairs={pairs}").status_code == 200
+    pairs = ",,wbt*c_eur,,,bt!c_usD"
+    assert client.get(f"/prices?currency_pairs={pairs}").status_code == 400
 
 def test_price_response_type(client):
-    pairs = "ksm_dot,kyl_usdt,bnb_gbp,testing_usd"
+    pairs = "ksm_dot,kyl_usdt,bnb_gbp,testing_usd,"
     response = json.loads(client.get(f"/prices?currency_pairs={pairs}").data.decode("utf8"))
     assert isinstance(response, dict)
 
@@ -39,6 +39,6 @@ def test_price_response_structure_2(client):
     response = json.loads(client.get(f"/prices?currency_pairs={pairs}").data.decode("utf8"))
     for source in response["sources"].values():
         for pair in source.values():
-            assert isinstance(pair["payload"], dict)
+            assert isinstance(pair["payload"], dict) or isinstance(pair["payload"], float)
             assert isinstance(pair["processed_at"], str)
             assert isinstance(pair["source"], str)

@@ -14,11 +14,16 @@ class Bancor(GenericSource):
         full_response[self.source_name] = {}
         all_markets = requests.get(self.url).json()
         for currency_pair in currency_pairs.split(","):
-            from_currency_symbol = currency_pair.split("_")[0]
+            if not self._is_valid_currency_pair(currency_pair): continue
+            from_currency_symbol = currency_pair.split("_")[0].strip()
+            to_currency_symbol = currency_pair.split("_")[1].strip()
+            if "usd" not in to_currency_symbol.lower(): continue # bancor only supports usd
             filtered_currency = filter(lambda x: from_currency_symbol.upper()==x["symbol"], all_markets["data"])
-            response = self.has_next(filtered_currency)
-            if response is None: continue
-            response = response["price"]
+            response = self._has_next(filtered_currency)
+            if response is None:
+                continue
+            else:
+                price = float(response["price"]["usd"])
             current_timestamp = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
-            full_response[self.source_name][currency_pair] = {"processed_at":current_timestamp,"source":self.source_name, "payload":response}
+            full_response[self.source_name][currency_pair.strip().lower()] = {"processed_at":current_timestamp,"source":self.source_name, "payload":price}
         return full_response    
