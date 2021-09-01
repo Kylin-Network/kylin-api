@@ -1,5 +1,7 @@
 from flask import Flask, make_response, Response, request
 from flask_cors import CORS
+from werkzeug.middleware.proxy_fix import ProxyFix
+
 from flask_restx import Resource
 from api.oracle_framework import OracleFramework
 from api.errors.exceptions import InvalidQuery
@@ -8,6 +10,7 @@ from .api import api
 app = Flask(__name__)
 cors = CORS(app)
 app.config['CORS_HEADERS'] = 'Content-Type'
+app.wsgi_app = ProxyFix(app.wsgi_app)
 
 api.init_app(app)
 oracle_framework = OracleFramework()
