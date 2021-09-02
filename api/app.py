@@ -26,7 +26,7 @@ class PriceList(Resource):
         else:
             raise InvalidQuery(payload=currency_pairs)
 
-@api.route('/', endpoint='health')
+@api.route('/health', endpoint='health')
 class HealthList(Resource):
     def get(self):
         return Response("OK", status=200)
