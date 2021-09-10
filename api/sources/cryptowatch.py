@@ -13,18 +13,24 @@ class CryptoWatch(GenericSource):
     def get_prices(self,currency_pairs):
         url = self.template_url
         all_markets = requests.get(url).json()
-        full_response = {}
-        filtered_markets = pd.DataFrame(columns=['market_name', 'price'])
+        full_response = []
         for currency_pair in currency_pairs.split(","):
             if not self._is_valid_currency_pair(currency_pair): continue
             filtered_currencies = filter(lambda x: ":" + currency_pair.replace("_","").strip() in x[0], all_markets["result"].items())
-            response = {key:value for (key,value) in filtered_currencies}
-            current_markets = pd.DataFrame(list(response.items()), columns=['market_name', 'price'])
-            current_markets['source_name'] = self.source_name
-            current_markets['currency_pair'] = currency_pair
-            if response == {}: continue
-            filtered_markets = pd.concat([filtered_markets,current_markets])
-        if len(full_response) > 0:
-            current_timestamp = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
-            full_response.update({"processed_at":current_timestamp,"source":self.source_name, "payload": json.loads(json.loads(json.dumps(filtered_markets.to_json(orient='records'))))})
+            all_prices = {key:value for (key,value) in filtered_currencies}
+            if all_prices == {}: continue
+            payload = self.assemble_payload(currency_pair, all_prices)
+            full_response.extend(payload)
         return full_response
+
+    def assemble_payload(self, currency_pair, all_prices):
+        payload = []
+        for market, price in all_prices.items():
+            payload.append({
+                "currency_pair": currency_pair.lower().strip(),
+                "market_name": market,
+                "price": price,
+                "source_name": self.source_name,
+                "processed_at": datetime.now().strftime("%Y-%m-%d %H:%M:%S"),
+            })
+        return payload

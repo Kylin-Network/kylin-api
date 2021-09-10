@@ -20,6 +20,15 @@ class GenericSource:
             current_timestamp = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
             full_response[self.source_name][currency_pair.strip().lower()] = {"processed_at":current_timestamp,"source":self.source_name, "payload":response}
         return full_response
+    
+    def assemble_payload(self, currency_pair, price):
+        return {
+            "currency_pair": currency_pair.lower().strip(),
+            "market_name": f"market:{self.source_name}:{currency_pair.lower().strip().replace('_','')}",
+            "price": price,
+            "source_name": self.source_name,
+            "processed_at": datetime.now().strftime("%Y-%m-%d %H:%M:%S"),
+        }
 
     def _has_next(self, generator:object):
         """
@@ -41,5 +50,4 @@ class GenericSource:
             split_currencies[0].strip().isalpha(),
             split_currencies[1].strip().isalpha(),
         ]
-        return True if all(rules) else False
-        
+        return True if all(rules) else False 
