@@ -30,15 +30,15 @@ def test_price_response_type(client):
 def test_price_response_structure_1(client):
     pairs = "uni_eth,link_aud,ltc_jpy,testing_usd"
     response = json.loads(client.get(f"/prices?currency_pairs={pairs}").data.decode("utf8"))
-    assert isinstance(response["sources"], dict)
+    assert isinstance(response["payload"], list)
     assert isinstance(response["completed_at"], str)
     assert isinstance(response["started_at"], str)
 
 def test_price_response_structure_2(client):
     pairs = "doge_eur,fil_btc,xlm_gbp,kyl_testing"
     response = json.loads(client.get(f"/prices?currency_pairs={pairs}").data.decode("utf8"))
-    for source in response["sources"].values():
-        for pair in source.values():
-            assert isinstance(pair["payload"], dict) or isinstance(pair["payload"], float)
-            assert isinstance(pair["processed_at"], str)
-            assert isinstance(pair["source"], str)
+    for price in response["payload"]:
+        assert isinstance(price["price"], float)
+        for key,value in price.items():
+            if key != "price":
+                assert isinstance(value, str)
