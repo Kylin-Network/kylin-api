@@ -24,7 +24,7 @@ class CryptoWatch(GenericSource):
             current_markets['currency_pair'] = currency_pair
             if response == {}: continue
             filtered_markets = pd.concat([filtered_markets,current_markets])
-
-        current_timestamp = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
-        full_response.update({"processed_at":current_timestamp,"source":self.source_name, "payload": json.loads(json.loads(json.dumps(filtered_markets.to_json(orient='records'))))})
+        if len(full_response) > 0:
+            current_timestamp = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+            full_response.update({"processed_at":current_timestamp,"source":self.source_name, "payload": json.loads(json.loads(json.dumps(filtered_markets.to_json(orient='records'))))})
         return full_response
