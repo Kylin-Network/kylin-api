@@ -2,8 +2,7 @@ from api.sources import source_config
 from api.sources.generic_source import GenericSource
 import requests
 from datetime import datetime
-import pandas as pd
-import json
+
 class CryptoWatch(GenericSource):
     def __init__(self):
         self.url = source_config.sources["cryptowatch"]['url']

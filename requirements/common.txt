@@ -3,4 +3,5 @@ gunicorn
 requests
 flask-restx
 flask-cors
-pandas
+flask-sqlalchemy
+psycopg2-binary

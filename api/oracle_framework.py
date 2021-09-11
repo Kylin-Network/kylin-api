@@ -24,6 +24,6 @@ class OracleFramework:
 
     def has_results(self, full_response):
         """
-        Helper function used to determine if dictionary returned from OracleFramework.get_prices() contains price data or not
+        Helper function used to determine if list returned from OracleFramework.get_prices() contains price data or not
         """
         return True if full_response["payload"] else False
