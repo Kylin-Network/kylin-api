@@ -1,4 +1,4 @@
-# kylin-api
+# Kylin API
 
 This API is set up for use with Python >= 3.7 and [Docker](https://www.docker.com/). You can set-up your local environment manually or compose up with docker to launch a containerised version of the API.
 
@@ -54,20 +54,11 @@ pytest
 This runs `tests/test_api.py` which contains test functions.
 
 ## Accessing the Swagger 
-Make sure the application is running in your local. 
-
-The swagger endpoint is mapped to the `/swagger`
-
-You can see the API specifictaion and the try your application directly from the swagger ui in the browser.
-
-Go to the browser and paste the following
-
+With the application running, use the browser to search the following:
 ```bash
-http://localhost:8080/swagger
+http://localhost:8080/
 ```
 
-You will be able to see the default namespace,click there and you can see the list of the endpoints available
-play through it using the try_out button
+You can see the API's specifictaion and try it directly from the swagger UI.  
 
-
-
+Inside the `default namespace` you will see the list of the endpoints available. You can test them using the `try_out` button.
