@@ -8,7 +8,7 @@ class ParachainDB(db.Model):
     __tablename__ = 'parachain_data'
     id = db.Column(db.Integer, primary_key=True, autoincrement=True)
     feed = db.Column(db.String)
-    block = db.Column(db.BigInteger)
+    block = db.Column(db.Integer)
     hash = db.Column(db.String)
     data = db.Column(db.String)
 

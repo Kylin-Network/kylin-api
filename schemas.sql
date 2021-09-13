@@ -1,7 +1,7 @@
 CREATE TABLE IF NOT EXISTS parachain_data (
   id SERIAL PRIMARY KEY,
   feed varchar,
-  block BIGINT,
+  block INT,
   hash varchar,
   data varchar
 );
