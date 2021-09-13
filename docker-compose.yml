@@ -22,7 +22,7 @@ services:
       POSTGRES_DB: kylin_parachain
     image: postgres:latest
     ports:
-      - 5405:5432
+      - 5433:5432
     restart: always
     container_name: postgres
     volumes:
@@ -30,3 +30,4 @@ services:
       - ./schemas.sql:/docker-entrypoint-initdb.d/schemas.sql
 volumes:
   app:
+  postgres-data:
