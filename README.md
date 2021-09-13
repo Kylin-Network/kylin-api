@@ -4,12 +4,14 @@ This API is set up for use with Python >= 3.7 and [Docker](https://www.docker.co
 
 ## Running with Docker
 
-First, you'll need to [install Docker](https://www.docker.com/products/docker-desktop). Then, run:
+To run the server with Docker, you'll need to [install Docker](https://www.docker.com/products/docker-desktop) if you havent already. Then, you can run:
 ```bash
 docker-compose up -d
 ```
 
-This will start a [Gunicorn](https://gunicorn.org/) server that wraps the Flask app defined in `api/app.py` as well as a [PostgreSQL](https://www.postgresql.org/) database. 
+This will start two Docker containers:
+- kylin-api: [Gunicorn](https://gunicorn.org/) server that wraps the Flask app defined in `api/app.py`
+- postgres: [PostgreSQL](https://www.postgresql.org/) database
 
 You should now be able to send:
 
@@ -17,7 +19,7 @@ You should now be able to send:
 curl localhost:8080/health
 ```
 
-And receive the response `OK` and status code `200`.  
+And receive the response `OK` and status code `200`. You can see other example calls, [here](#example-calls). 
 
 Your server and database are running in a detached state as indicated by `-d`. When you are ready to bring down your server, run:
 
