@@ -30,7 +30,7 @@ Your server and database are running in a detached state as indicated by `-d`. W
 docker-compose down
 ```
 
-## Running locally
+## Running Locally
 
 To run the server locally, you'll need to install a few requirements. To do this, run:
 
@@ -65,7 +65,7 @@ curl -d '{"data": "This is json serializable data", "feed": "demo_feed", "block"
 Query database:
 ```bash
 # select all data
-curl http://127.0.0.1:8080/query/all
+curl http://localhost:8080/query/all
 
 # select by hash
 curl "http://localhost:8080/query?hash=demo_hash"
