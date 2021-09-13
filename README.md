@@ -1,6 +1,9 @@
 # Kylin API
 
 This API is set up for use with Python >= 3.7 and [Docker](https://www.docker.com/). You can set-up your local environment manually or compose up with docker to launch a containerised version of the API.
+```bash
+git clone https://github.com/Kylin-Network/kylin-api.git
+```
 
 ## Running with Docker
 
@@ -35,7 +38,7 @@ To run the server locally, you'll need to install a few requirements. To do this
 pip install -r requirements/common.txt
 ``` 
 
-To connect to a PostgreSQL database, create a 'SQLALCHEMY_DATABASE_URI' environment variable:
+If you are running a local PostgreSQL instance, create an 'SQLALCHEMY_DATABASE_URI' environment variable:
 ```bash
 export SQLALCHEMY_DATABASE_URI="YOUR CONNECTION STRING"
 ```
