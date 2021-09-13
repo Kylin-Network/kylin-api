@@ -8,7 +8,7 @@ class ParachainDB(db.Model):
     __tablename__ = 'parachain_data'
     id = db.Column(db.Integer, primary_key=True, autoincrement=True)
     feed = db.Column(db.String)
-    block = db.Column(db.Integer)
+    block = db.Column(db.BigInteger)
     hash = db.Column(db.String)
     data = db.Column(db.String)
 
@@ -30,7 +30,7 @@ class ParachainDB(db.Model):
     def select_all_by_feed(self, feed):
         data = db.session.query(ParachainDB) \
             .filter_by(feed=feed) \
-            .order_by(ParachainDB.block.desc()) \
+            .order_by(ParachainDB.block) \
             .all()
         return self.convert_model_obj_to_list(data)
 

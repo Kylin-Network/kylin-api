@@ -3,15 +3,15 @@ from flask_cors import CORS
 from flask_restx import Resource
 from api.oracle_framework import OracleFramework
 from api.errors.exceptions import *
-from api.config import CONN_STRING
 from api.db.data_store import DataStore
 from api.db.models import db, ParachainDB
 from api.api import api
+import os
 
 app = Flask(__name__)
 cors = CORS(app)
 app.config['CORS_HEADERS'] = 'Content-Type'
-app.config['SQLALCHEMY_DATABASE_URI'] = CONN_STRING
+app.config['SQLALCHEMY_DATABASE_URI'] = os.getenv('SQLALCHEMY_DATABASE_URI') # configured in docker-compose.yml
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 app.config['RESTX_ERROR_404_HELP'] = False
 
@@ -63,6 +63,12 @@ class QueryData(Resource):
             results = ParachainDB.select_all_by_hash(request.args["hash"])
         else:
             raise InvalidQueryParam(payload=request.args)
+        return make_response(jsonify(results), 200)
+
+@api.route('/query/all', endpoint='query/all')
+class QueryAll(Resource):
+    def get(self):
+        results = ParachainDB.select_all()
         return make_response(jsonify(results), 200)
 
 if __name__ == "__main__":
