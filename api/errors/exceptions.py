@@ -1,8 +1,40 @@
-class InvalidQuery(Exception):
+class InvalidCurrencyPair(Exception):
     def __init__(self,
-                message="Ensure you are using valid currency symbols with format: '<FROM-CURRENCY>_<TO-CURRENCY>'. If passing multiple currency pairs, separate them with commas. Example: btc_usd,eth_gbp,kyl_jpy",
-                status_code=400,
-                payload=None):
+            message="Invalid currency pair",
+            status_code=404,
+            payload=None):
+        super().__init__(message)
         self.message = message
         self.status_code = status_code
         self.payload = payload
+
+class InvalidContentType(Exception):
+    def __init__(self,
+            message="Invalid content-type",
+            status_code=400,
+            payload=None):
+        super().__init__(message)
+        self.message = message
+        self.status_code = status_code
+        self.payload = payload
+
+class InvalidSubmitParam(Exception):
+    def __init__(self,
+            message="Invalid submit param(s)",
+            status_code=400,
+            payload=None):
+        super().__init__(message)
+        self.message = message
+        self.status_code = status_code
+        self.payload = payload
+
+class InvalidQueryParam(Exception):
+    def __init__(self,
+            message="Invalid query param(s)",
+            status_code=400,
+            payload=None):
+        super().__init__(message)
+        self.message = message
+        self.status_code = status_code
+        self.payload = payload
+        

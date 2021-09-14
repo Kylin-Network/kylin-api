@@ -10,8 +10,7 @@ class CoinGecko(GenericSource):
         super().__init__(self.url,self.source_name)
 
     def get_prices(self,currency_pairs):
-        full_response = {}
-        full_response[self.source_name] = {}
+        full_response = []
         symbol_lookup_url = self.url.replace("simple/price?ids=FROM_CURRENCY&vs_currencies=TO_CURRENCY","coins/list/")
         all_coins = requests.get(symbol_lookup_url).json()
         for currency_pair in currency_pairs.split(","):
@@ -24,8 +23,7 @@ class CoinGecko(GenericSource):
             response = requests.get(self.url.replace("FROM_CURRENCY",filtered_currency["id"]).replace("TO_CURRENCY",to_currency_symbol)).json()
             if (filtered_currency["id"] in response) and (to_currency_symbol.lower() in response[filtered_currency["id"]]):
                 price = float(response[filtered_currency["id"]][to_currency_symbol.lower()])
+                full_response.append(self.assemble_payload(currency_pair, price))
             else:
                 continue
-            current_timestamp = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
-            full_response[self.source_name][currency_pair.strip().lower()] = {"processed_at":current_timestamp,"source":self.source_name, "payload":price}
         return full_response

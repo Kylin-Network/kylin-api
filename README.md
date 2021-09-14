@@ -1,22 +1,20 @@
-# kylin-api
+# Kylin API
 
 This API is set up for use with Python >= 3.7 and [Docker](https://www.docker.com/). You can set-up your local environment manually or compose up with docker to launch a containerised version of the API.
-
-## Running locally
-
-To run the server, you'll need to install a few requirements. To do this, run:
-
 ```bash
-pip install -r requirements/common.txt
+git clone https://github.com/Kylin-Network/kylin-api.git
 ```
 
-This will install only the dependencies required to run the server. To boot up the server, you can run:
+## Running with Docker
 
+To run the server with Docker, you'll need to [install Docker](https://www.docker.com/products/docker-desktop) if you havent already. Then, you can run:
 ```bash
-bash bin/run.sh
+docker-compose up -d
 ```
 
-This will start a [Gunicorn](https://gunicorn.org/) server that wraps the Flask app defined in `api/app.py`. 
+This will start two Docker containers:
+- kylin-api: [Gunicorn](https://gunicorn.org/) server that wraps the Flask app defined in `api/app.py`
+- postgres: [PostgreSQL](https://www.postgresql.org/) database
 
 You should now be able to send:
 
@@ -24,20 +22,56 @@ You should now be able to send:
 curl localhost:8080/health
 ```
 
-And receive the response `OK` and status code `200`. 
+And receive the response `OK` and status code `200`. You can see other example calls, [here](#example-calls). 
 
-## Running with docker
+Your server and database are running in a detached state as indicated by `-d`. When you are ready to bring down your server, run:
 
-Unsurprisingly, you'll need [Docker](https://www.docker.com/products/docker-desktop) 
-installed to run this project with Docker. To launch a containerised version of the API, run:
 ```bash
-docker compose up -d
+docker-compose down
 ```
 
-Your server will boot up in a detached state as indicated by `-d`, and should be accessible as before. When you are ready to bring down your server, run:
+## Running Locally
+
+To run the server locally, you'll need to install a few requirements. To do this, run:
 
 ```bash
-docker compose down
+pip install -r requirements/common.txt
+``` 
+
+If you are running a local PostgreSQL instance, create an 'SQLALCHEMY_DATABASE_URI' environment variable:
+```bash
+export SQLALCHEMY_DATABASE_URI="YOUR CONNECTION STRING"
+```
+If you plan on writing to the database, you'll need to create a `parachain_data` table as defined in `schemas.sql`.
+
+Finally, to boot up the server, run:
+
+```bash
+bash bin/run.sh
+``` 
+
+You should now be able to interact with your server as described above.
+
+## Example Calls
+Get price feed:
+```bash
+curl "http://localhost:8080/prices?currency_pairs=btc_usd"
+```
+
+Write to database:
+```bash
+curl -d '{"data": "This is json serializable data", "feed": "demo_feed", "block": "1", "hash": "demo_hash"}' -H "Content-Type: application/json" http://localhost:8080/submit
+```
+Query database:
+```bash
+# select all data
+curl http://localhost:8080/query/all
+
+# select by hash
+curl "http://localhost:8080/query?hash=demo_hash"
+
+# select by feed
+curl "http://localhost:8080/query?feed=demo_feed"
 ```
 
 ## Testing the API
@@ -54,20 +88,11 @@ pytest
 This runs `tests/test_api.py` which contains test functions.
 
 ## Accessing the Swagger 
-Make sure the application is running in your local. 
-
-The swagger endpoint is mapped to the `/swagger`
-
-You can see the API specifictaion and the try your application directly from the swagger ui in the browser.
-
-Go to the browser and paste the following
-
+With the application running, use the browser to search the following:
 ```bash
-http://localhost:8080/swagger
+http://localhost:8080/
 ```
 
-You will be able to see the default namespace,click there and you can see the list of the endpoints available
-play through it using the try_out button
+You can see the API's specification and try it directly from the swagger UI.  
 
-
-
+Inside the `default namespace` you will see the list of the endpoints available. You can test them using the `try_out` button.
