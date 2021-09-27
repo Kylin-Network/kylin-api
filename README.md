@@ -57,10 +57,9 @@ Get price feed:
 ```bash
 curl "http://localhost:8080/prices?currency_pairs=btc_usd"
 ```
-
 Write to database:
 ```bash
-curl -d '{"data": "This is json serializable data", "feed": "demo_feed", "block": "1", "hash": "demo_hash"}' -H "Content-Type: application/json" http://localhost:8080/submit
+curl -d '{"para_id": "para id", "account_id": "account id", "requested_block_number": "1", "processed_block_number": "1", "requested_timestamp": "1632770041.806915", "processed_timestamp": "1632770041.806915", "payload": "This is json serializable data", "feed_name": "demo_feed", "url": "url"}' -H "Content-Type: application/json" http://localhost:8080/submit
 ```
 Query database:
 ```bash
@@ -72,6 +71,9 @@ curl "http://localhost:8080/query?hash=demo_hash"
 
 # select by feed
 curl "http://localhost:8080/query?feed=demo_feed"
+
+# query with sql
+curl "http://localhost:8080/query/sql?query=SELECT%20*%20FROM%20parachain_data"
 ```
 
 ## Testing the API

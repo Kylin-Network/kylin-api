@@ -4,16 +4,21 @@ import json
 
 @dataclass(frozen=True)
 class DataStore:
-    data:object
-    hash:str
-    feed:str 
-    block:str
+    para_id:str
+    account_id:str
+    requested_block_number:str
+    processed_block_number:str
+    requested_timestamp:str
+    processed_timestamp:str
+    payload:str
+    feed_name:str
+    url:str
 
-    def create_data_hash(self):
+    def generate_payload_hash(self):
         hasher = hashlib.sha256()
-        encoded_data = self.dump_data().encode("utf8")
+        encoded_data = self.dump_payload().encode("utf8")
         hasher.update(encoded_data)
         return hasher.hexdigest()
 
-    def dump_data(self):
-        return json.dumps(self.data)
+    def dump_payload(self):
+        return json.dumps(self.payload)

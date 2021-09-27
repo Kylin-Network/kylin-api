@@ -4,7 +4,7 @@ from flask_restx import Resource
 from api.oracle_framework import OracleFramework
 from api.errors.exceptions import *
 from api.db.data_store import DataStore
-from api.db.models import db, ParachainDB
+from api.db.models import db, ParachainData
 from api.api import api
 import os
 
@@ -49,7 +49,7 @@ class SubmitData(Resource):
             store = DataStore(**kwargs)
         except:
             raise InvalidSubmitParam()
-        ParachainDB.insert_new_row(store)
+        ParachainData.insert_new_row(store)
         return make_response({"message":"Data submitted successfully."}, 200)
 
 @api.route('/query', endpoint='query')
@@ -58,9 +58,9 @@ class SubmitData(Resource):
 class QueryData(Resource):
     def get(self):
         if "feed" in request.args:
-            results = ParachainDB.select_all_by_feed(request.args["feed"])
+            results = ParachainData.select_all_by_feed(request.args["feed"])
         elif "hash" in request.args:
-            results = ParachainDB.select_all_by_hash(request.args["hash"])
+            results = ParachainData.select_all_by_hash(request.args["hash"])
         else:
             raise InvalidQueryParam(payload=request.args)
         return make_response(jsonify(results), 200)
@@ -68,7 +68,15 @@ class QueryData(Resource):
 @api.route('/query/all', endpoint='query/all')
 class QueryAll(Resource):
     def get(self):
-        results = ParachainDB.select_all()
+        results = ParachainData.select_all()
+        return make_response(jsonify(results), 200)
+
+@api.route('/query/sql', endpoint='query/sql')
+@api.param('query', 'SQL query used to query parachina data.')
+class QuerySQL(Resource):
+    def get(self):
+        query = request.args["query"]
+        results = ParachainData.sql(query)
         return make_response(jsonify(results), 200)
 
 if __name__ == "__main__":
