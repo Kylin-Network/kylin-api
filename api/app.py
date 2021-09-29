@@ -37,18 +37,16 @@ class Prices(Resource):
 
 @api.route('/submit', endpoint='submit')
 @api.param('data', 'JSON data to store.')
-@api.param('hash', 'Hash of data written on-chain.')
-@api.param('feed', 'Feed name of which hash is referenced to on-chain.')
-@api.param('block', 'Block number which hash is written to.')
 class SubmitData(Resource):
     def post(self):
         if not request.is_json:
             raise InvalidContentType(payload=request.content_type)
         try:
-            kwargs = request.get_json()
-            store = DataStore(**kwargs)
-        except:
-            raise InvalidSubmitParam()
+            body = request.get_json()
+            store = DataStore(body)
+        except Exception as ex:
+            import ipdb;ipdb.set_trace()
+            raise InvalidSubmitParam(ex)
         ParachainDB.insert_new_row(store)
         return make_response({"message":"Data submitted successfully."}, 200)
 

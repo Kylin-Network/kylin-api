@@ -1,7 +1,12 @@
 CREATE TABLE IF NOT EXISTS parachain_data (
   id SERIAL PRIMARY KEY,
-  feed varchar,
-  block INT,
-  hash varchar,
-  data varchar
+  para_id varchar,
+  account_id varchar,
+  requested_block_number bigint,
+  processed_block_number bigint,
+  requested_timestamp timestamp,
+  processed_timestamp timestamp,
+  payload varchar,
+  feed_name varchar,
+  url varchar
 );
