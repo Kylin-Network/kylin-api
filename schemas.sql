@@ -11,3 +11,9 @@ CREATE TABLE IF NOT EXISTS parachain_data (
   url VARCHAR,
   hash VARCHAR
 );
+
+CREATE TABLE IF NOT EXISTS users (
+  id SERIAL PRIMARY KEY,
+  wallet VARCHAR(100),
+  api_key VARCHAR(100)
+);

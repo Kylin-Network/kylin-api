@@ -95,3 +95,9 @@ class ParachainData(db.Model):
         )
         db.session.add(insert)
         db.session.commit()
+
+class Users(db.Model):
+    __tablename__ = 'users'
+    id = db.Column(db.Integer, primary_key=True)
+    wallet = db.Column(db.String(100), unique=True)
+    api_key = db.Column(db.String(100))

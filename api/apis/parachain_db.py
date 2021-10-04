@@ -3,15 +3,18 @@ from flask_restx import Resource, Namespace
 from api.errors.exceptions import InvalidContentType, InvalidSubmitParam, InvalidQueryParam
 from api.db.data_store import DataStore
 from api.db.models import ParachainData
+from api.utils import require_apikey
+from api.utils import limiter
 
-database = Namespace("database", description="database api endpoints")
+parachain_db = Namespace("database", description="parachain database api endpoints")
 
-@database.route('/submit', endpoint='submit')
-@database.param('data', 'JSON data to store.')
-@database.param('hash', 'Hash of data written on-chain.')
-@database.param('feed', 'Feed name of which hash is referenced to on-chain.')
-@database.param('block', 'Block number which hash is written to.')
+@parachain_db.route('/submit', endpoint='submit')
+@parachain_db.param('data', 'JSON data to store.')
+@parachain_db.param('hash', 'Hash of data written on-chain.')
+@parachain_db.param('feed', 'Feed name of which hash is referenced to on-chain.')
+@parachain_db.param('block', 'Block number which hash is written to.')
 class SubmitData(Resource):
+    decorators = [require_apikey, limiter.limit("2/hour", per_method=True)]
     def post(self):
         if not request.is_json:
             raise InvalidContentType(payload=request.content_type)
@@ -23,24 +26,27 @@ class SubmitData(Resource):
         ParachainData.insert_new_row(store)
         return make_response({"message":"Data submitted successfully."}, 200)
 
-@database.route('/query/sql', endpoint='query/sql')
-@database.param('query', 'SQL query used to query parachina data.')
+@parachain_db.route('/query/sql', endpoint='query/sql')
+@parachain_db.param('query', 'SQL query used to query parachina data.')
 class QuerySQL(Resource):
+    decorators = [require_apikey, limiter.limit("1/hour", per_method=True)]
     def get(self):
         query = request.args["query"]
         results = ParachainData.sql(query)
         return make_response(jsonify(results), 200)
 
-@database.route('/query/all', endpoint='query/all')
+@parachain_db.route('/query/all', endpoint='query/all')
 class QueryAll(Resource):
+    decorators = [require_apikey, limiter.limit("3/hour", per_method=True)]
     def get(self):
         results = ParachainData.select_all()
         return make_response(jsonify(results), 200)
 
-@database.route('/query', endpoint='query')
-@database.param('hash', "Used to query data related to the hash's feed name.")
-@database.param('feed', 'Used to query data related to the feed name. If both hash and feed are passed, feed is default.')
+@parachain_db.route('/query', endpoint='query')
+@parachain_db.param('hash', "Used to query data related to the hash's feed name.")
+@parachain_db.param('feed', 'Used to query data related to the feed name. If both hash and feed are passed, feed is default.')
 class QueryFeedOrHash(Resource):
+    decorators = [require_apikey, limiter.limit("4/hour", per_method=True)]
     def get(self):
         if "feed" in request.args:
             results = ParachainData.select_all_by_feed(request.args["feed"])
