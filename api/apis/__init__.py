@@ -13,5 +13,5 @@ api = Api(
 )
 api.add_namespace(errors)
 api.add_namespace(prices, path="/prices")
-api.add_namespace(parachain_db, path='/database')
+api.add_namespace(parachain_db, path='/parachain')
 api.add_namespace(auth, path="/auth")
