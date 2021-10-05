@@ -2,7 +2,7 @@ from flask import Blueprint, request, make_response
 from flask_restx import Resource, Namespace
 from api.db.models import Users, db
 import uuid
-from api.utils import limiter
+from api.manage import limiter
 
 auth = Namespace('auth', description="authentication endpoints")
 
@@ -18,4 +18,4 @@ class GetAPIKey(Resource):
         new_user = Users(wallet=wallet, api_key=api_key)
         db.session.add(new_user)
         db.session.commit()
-        return make_response({"message":f"Your API Key: {api_key}"}, 200)
+        return make_response({"api_key": api_key}, 200)

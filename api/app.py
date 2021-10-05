@@ -1,18 +1,10 @@
-from flask import Flask, Response
-from flask_cors import CORS
+from flask import Response
 from flask_restx import Resource
 from api.db.models import db
 from api.apis import api
-from api.utils import limiter
-import os
+from api.manage import create_app, limiter
 
-app = Flask(__name__)
-cors = CORS(app)
-app.config['CORS_HEADERS'] = 'Content-Type'
-app.config['SQLALCHEMY_DATABASE_URI'] = os.getenv('SQLALCHEMY_DATABASE_URI') # configured in docker-compose.yml or on local machine
-app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
-app.config['RESTX_ERROR_404_HELP'] = False
-app.config['RATELIMIT_STRATEGY'] = "fixed-window"
+app = create_app()
 
 api.init_app(app)
 db.init_app(app)
