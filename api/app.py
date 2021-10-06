@@ -1,7 +1,7 @@
-from flask import Response
+from flask import make_response
 from flask_restx import Resource
 from api.db.models import db
-from api.apis import api
+from api.blueprints import api
 from api.manage import create_app, limiter
 
 app = create_app()
@@ -14,7 +14,7 @@ limiter.init_app(app)
 class Health(Resource):
     decorators = [limiter.exempt]
     def get(self):
-        return Response("OK", status=200)
+        return make_response({"message": "OK"}, 200)
 
 if __name__ == "__main__":
     app.run()

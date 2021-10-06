@@ -1,9 +1,8 @@
-from flask import request
 from flask_restx import Api
 from api.errors.error_handler import errors
-from api.apis.parachain_db import parachain_db
-from api.apis.price_oracle import prices
-from api.apis.auth import auth
+from api.blueprints.parachain_db import parachain_db
+from api.blueprints.price_oracle import prices
+from api.blueprints.auth import auth
 
 api = Api(
     doc='/',

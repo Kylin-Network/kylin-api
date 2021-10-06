@@ -30,11 +30,13 @@ class ParachainData(db.Model):
     
     @classmethod
     def select_all_by_hash(self, hash):
-        feed = db.session.query(ParachainData) \
+        row = db.session.query(ParachainData) \
             .filter_by(hash=hash) \
-            .first() \
-            .feed
-        return self.select_all_by_feed(feed)
+            .first()
+        if row:
+            return self.select_all_by_feed(row.feed)
+        else:
+            return []
 
     @classmethod
     def select_all_by_feed(self, feed):

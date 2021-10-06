@@ -19,6 +19,14 @@ def invalid_query_param_error(error):
 def invalid_submit_param_error(error):
     return {"message": f"Submit did not succeed. Pass valid json format with the following keys and types: 'data':JSON, 'hash':string, 'feed':string, 'block':int."}, 400
 
+@errors.errorhandler(InvalidApiKey)
+def invalid_api_key(error):
+    return {"message": f"Authentication failed. Pass a valid API key with header 'x-api-key: YOUR_API_KEY'."}, 401
+
+@errors.errorhandler(ExistingUserFound)
+def existing_user_found(error):
+    return {"message": f"Existing API key found for '{error.payload}'. Only one API key per account is allowed."}, 422
+
 @errors.errorhandler(Exception)
 def server_error(error):
     return {"message": f"Oops, got an error! {error}"}, 500
