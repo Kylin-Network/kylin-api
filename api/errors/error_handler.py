@@ -13,11 +13,11 @@ def invalid_content_type_error(error):
 
 @errors.errorhandler(InvalidQueryParam)
 def invalid_query_param_error(error):
-    return {"message": f"'{error.payload}' is not a valid parameter. Pass 'hash' or 'feed' to query data for. If both are passed, 'feed' is used as default."}, 400
+    return {"message": f"'{error.payload}' is not a valid parameter. Pass feed name to query data for."}, 400
 
 @errors.errorhandler(InvalidSubmitParam)
 def invalid_submit_param_error(error):
-    return {"message": f"Submit did not succeed. Pass valid json format with the following keys and types: 'data':JSON, 'hash':string, 'feed':string, 'block':int."}, 400
+    return {"message": f"Submit did not succeed. Pass valid json format with the following keys: 'para_id', 'account_id', 'requested_block_number', 'processed_block_number', 'requested_timestamp', 'processed_timestamp', 'payload', 'feed_name', 'url'."}, 400
 
 @errors.errorhandler(InvalidApiKey)
 def invalid_api_key(error):

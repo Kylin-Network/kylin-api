@@ -1,6 +1,5 @@
 from flask_sqlalchemy import SQLAlchemy
 from api.db.data_store import DataStore
-from datetime import datetime, timezone
 
 db = SQLAlchemy()
 
@@ -16,69 +15,20 @@ class ParachainData(db.Model):
     payload = db.Column(db.String)
     feed_name = db.Column(db.String)
     url = db.Column(db.String)
-    hash = db.Column(db.String)
-
-    @classmethod
-    def sql(self, query):
-        data = db.engine.execute(query)
-        return self.convert_sql_query_to_list(data)
-
-    @classmethod
-    def select_all(self):
-        data = ParachainData.query.all()
-        return self.convert_model_obj_to_list(data)
-    
-    @classmethod
-    def select_all_by_hash(self, hash):
-        row = db.session.query(ParachainData) \
-            .filter_by(hash=hash) \
-            .first()
-        if row:
-            return self.select_all_by_feed(row.feed)
-        else:
-            return []
 
     @classmethod
     def select_all_by_feed(self, feed):
-        data = db.session.query(ParachainData) \
+        result = db.session.query(ParachainData) \
             .filter_by(feed_name=feed) \
             .order_by(ParachainData.processed_timestamp) \
             .all()
-        return self.convert_model_obj_to_list(data)
+        return [ParachainData.row_to_dict(row) for row in result]
 
     @classmethod
-    def convert_model_obj_to_list(self, model):
-        payload = [{
-            "para_id": row.para_id,
-            "account_id": row.account_id,
-            "requested_block_number": row.requested_block_number,
-            "processed_block_number": row.processed_block_number,
-            "requested_timestamp": row.requested_timestamp,
-            "processed_timestamp": row.processed_timestamp,
-            "payload": row.payload,
-            "feed_name": row.feed_name,
-            "url": row.url,
-            "hash": row.hash,
-            } for row in model
-        ]
-        return payload
-
-    @classmethod
-    def convert_sql_query_to_list(self, list_of_rows):
-        payload = [{
-            "id": row[0],
-            "para_id": row[1],
-            "account_id": row[2],
-            "requested_block_number": row[3],
-            "processed_block_number": row[4],
-            "requested_timestamp": row[5],
-            "processed_timestamp": row[6],
-            "payload": row[7],
-            "feed_name": row[8],
-            "url": row[9],
-            "hash": row[10],
-            } for row in list_of_rows
-        ]
+    def row_to_dict(self, row):
+        payload = {}
+        for column in row.__table__.columns:
+            payload[column.name] = str(getattr(row, column.name))
         return payload
 
     @classmethod
@@ -88,12 +38,11 @@ class ParachainData(db.Model):
             account_id = store.account_id,
             requested_block_number = int(store.requested_block_number),
             processed_block_number = int(store.processed_block_number),
-            requested_timestamp = datetime.fromtimestamp(float(store.requested_timestamp), tz=timezone.utc),
-            processed_timestamp = datetime.fromtimestamp(float(store.processed_timestamp), tz=timezone.utc),
+            requested_timestamp = store.to_datetime(store.requested_timestamp),
+            processed_timestamp = store.to_datetime(store.processed_timestamp),
             payload = store.payload,
             feed_name = store.feed_name,
             url = store.url,
-            hash = store.generate_payload_hash(),
         )
         db.session.add(insert)
         db.session.commit()

@@ -1,6 +1,9 @@
 # PostgreSQL
 postgres-data/
 
+# Redis
+redis-data/
+
 # Byte-compiled / optimized / DLL files
 __pycache__/
 *.py[cod]

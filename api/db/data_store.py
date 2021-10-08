@@ -1,6 +1,5 @@
 from dataclasses import dataclass
-import hashlib
-import json
+from datetime import datetime, timezone
 
 @dataclass(frozen=True)
 class DataStore:
@@ -14,11 +13,12 @@ class DataStore:
     feed_name:str
     url:str
 
-    def generate_payload_hash(self):
-        hasher = hashlib.sha256()
-        encoded_data = self.dump_payload().encode("utf8")
-        hasher.update(encoded_data)
-        return hasher.hexdigest()
+    def to_datetime(self, timestamp):
+        """
+        Converts a timestamp in milliseconds to datetime utc
+        """
+        dt = datetime.fromtimestamp(self.from_millis(timestamp), tz=timezone.utc)
+        return dt
 
-    def dump_payload(self):
-        return json.dumps(self.payload)
+    def from_millis(self, val):
+        return float(val) / 1000

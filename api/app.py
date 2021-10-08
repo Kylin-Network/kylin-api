@@ -1,4 +1,4 @@
-from flask import make_response
+from flask import Response
 from flask_restx import Resource
 from api.db.models import db
 from api.blueprints import api
@@ -12,9 +12,8 @@ limiter.init_app(app)
 
 @api.route('/health', endpoint='health')
 class Health(Resource):
-    decorators = [limiter.exempt]
     def get(self):
-        return make_response({"message": "OK"}, 200)
+        return Response("OK", status=200)
 
 if __name__ == "__main__":
     app.run()

@@ -73,14 +73,7 @@ curl -d '{"para_id": "para id", "account_id": "account id", "requested_block_num
 ```
 Query database:
 ```bash
-# select all data
-curl -H "x-api-key: YOUR_API_KEY" "http://localhost:8080/parachain/query/all"
-
-# select by feed
 curl -H "x-api-key: YOUR_API_KEY" "http://localhost:8080/parachain/query?feed=demo_feed"
-
-# query with sql
-curl -H "x-api-key: YOUR_API_KEY" "http://localhost:8080/parachain/query/sql?query=SELECT%20*%20FROM%20parachain_data"
 ```
 
 ## Testing the API

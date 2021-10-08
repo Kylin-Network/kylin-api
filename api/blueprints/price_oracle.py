@@ -2,16 +2,16 @@ from flask import make_response, request
 from flask_restx import Resource, Namespace
 from api.errors.exceptions import InvalidCurrencyPair
 from api.oracle_framework import OracleFramework
-from api.manage import require_apikey
+from api.manage import require_apikey, limiter
 
-prices = Namespace("prices", description="price api endpoints")
+prices = Namespace("prices", description="Price api endpoints.")
 
 oracle_framework = OracleFramework()
 
 @prices.route('/spot', endpoint='prices/spot')
 @prices.param('currency_pairs', 'The currency pairs of which to query price data.')
 class Spot(Resource):
-    decorators = [require_apikey]
+    # decorators = [require_apikey, limiter.limit("10/second")]
     def get(self):
         currency_pairs = request.args['currency_pairs']
         prices = oracle_framework.get_prices(currency_pairs)
