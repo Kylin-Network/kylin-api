@@ -45,7 +45,6 @@ class SubmitData(Resource):
             body = request.get_json()
             store = DataStore(body)
         except Exception as ex:
-            import ipdb;ipdb.set_trace()
             raise InvalidSubmitParam(ex)
         ParachainDB.insert_new_row(store)
         return make_response({"message":"Data submitted successfully."}, 200)
