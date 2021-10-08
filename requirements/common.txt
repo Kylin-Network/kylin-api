@@ -5,3 +5,5 @@ flask-restx
 flask-cors
 flask-sqlalchemy
 psycopg2-binary
+Flask-Limiter
+redis
