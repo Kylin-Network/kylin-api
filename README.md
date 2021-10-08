@@ -69,7 +69,7 @@ curl -H "x-api-key: YOUR_API_KEY" "http://localhost:8080/prices/spot?currency_pa
 ```
 Write to database:
 ```bash
-curl -d '{"para_id": "para id", "account_id": "account id", "requested_block_number": "1", "processed_block_number": "1", "requested_timestamp": "1632770041.806915", "processed_timestamp": "1632770041.806915", "payload": "This is json serializable data", "feed_name": "demo_feed", "url": "url"}' -H "x-api-key: YOUR_API_KEY" -H "Content-Type: application/json" "http://localhost:8080/parachain/submit"
+curl -d '{"para_id": "para id", "account_id": "account id", "requested_block_number": "1", "processed_block_number": "1", "requested_timestamp": "1633728007913.35", "processed_timestamp": "1633728007913.35", "payload": "This is json serializable data", "feed_name": "demo_feed", "url": "url"}' -H "x-api-key: YOUR_API_KEY" -H "Content-Type: application/json" "http://localhost:8080/parachain/submit"
 ```
 Query database:
 ```bash
