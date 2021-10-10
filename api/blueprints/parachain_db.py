@@ -19,23 +19,15 @@ class QueryData(Resource):
         return make_response(jsonify(results), 200)
 
 @parachain_db.route('/submit', endpoint='parachain/submit')
-@parachain_db.param('para_id', 'Parachain id which transaction originated from.')
-@parachain_db.param('account_id', 'Account id which initiated transaction.')
-@parachain_db.param('requested_block_number', 'Requested block number.')
-@parachain_db.param('processed_block_number', 'Processed block number.')
-@parachain_db.param('requested_timestamp', 'Requested timestamp in milliseconds.')
-@parachain_db.param('processed_timestamp', 'Processed timestamp in milliseconds.')
-@parachain_db.param('payload', 'JSON serializable data to be stored')
-@parachain_db.param('feed_name', 'Feed name which payload is referenced to on-chain.')
-@parachain_db.param('url', 'URL which was used to fetch data, if used at all.')
+@parachain_db.param('data', 'JSON data to store.')
 class SubmitData(Resource):
     # decorators = [require_apikey, limiter.limit("10/second")]
     def post(self):
         if not request.is_json:
             raise InvalidContentType(payload=request.content_type)
         try:
-            kwargs = request.get_json()
-            store = DataStore(**kwargs)
+            body = request.get_json()
+            store = DataStore(**body)
         except:
             raise InvalidSubmitParam()
         ParachainData.insert_new_row(store)
