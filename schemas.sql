@@ -4,8 +4,8 @@ CREATE TABLE IF NOT EXISTS parachain_data (
   account_id VARCHAR,
   requested_block_number BIGINT,
   processed_block_number BIGINT,
-  requested_timestamp TIMESTAMPTZ,
-  processed_timestamp TIMESTAMPTZ,
+  requested_timestamp TIMESTAMP,
+  processed_timestamp TIMESTAMP,
   payload VARCHAR,
   feed_name VARCHAR,
   url VARCHAR

@@ -1,7 +1,7 @@
 from flask import make_response, request, jsonify
 from flask_restx import Resource, Namespace
 from api.errors.exceptions import InvalidContentType, InvalidSubmitParam, InvalidQueryParam
-from api.db.data_store import DataStore
+from api.db.data_request import DataRequest
 from api.db.models import ParachainData
 from api.manage import require_apikey, limiter
 
@@ -27,7 +27,7 @@ class SubmitData(Resource):
             raise InvalidContentType(payload=request.content_type)
         try:
             body = request.get_json()
-            store = DataStore(**body)
+            store = DataRequest(body)
         except:
             raise InvalidSubmitParam()
         ParachainData.insert_new_row(store)

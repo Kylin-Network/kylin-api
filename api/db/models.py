@@ -1,5 +1,5 @@
 from flask_sqlalchemy import SQLAlchemy
-from api.db.data_store import DataStore
+from api.db.data_request import DataRequest
 
 db = SQLAlchemy()
 
@@ -32,14 +32,14 @@ class ParachainData(db.Model):
         return payload
 
     @classmethod
-    def insert_new_row(self, data_request:DataStore):
+    def insert_new_row(self, data_request:DataRequest):
         insert = ParachainData(
             para_id = data_request.para_id,
             account_id = data_request.account_id,
-            requested_block_number = int(data_request.requested_block_number),
-            processed_block_number = int(data_request.processed_block_number),
-            requested_timestamp = data_request.to_datetime(data_request.requested_timestamp),
-            processed_timestamp = data_request.to_datetime(data_request.processed_timestamp),
+            requested_block_number = data_request.requested_block_number,
+            processed_block_number = data_request.processed_block_number,
+            requested_timestamp = data_request.requested_timestamp,
+            processed_timestamp = data_request.processed_timestamp,
             payload = data_request.payload,
             feed_name = data_request.feed_name,
             url = data_request.url,

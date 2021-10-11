@@ -15,14 +15,15 @@ def create_app():
     app.config['RESTX_ERROR_404_HELP'] = False
     app.config['SQLALCHEMY_DATABASE_URI'] = os.getenv('SQLALCHEMY_DATABASE_URI')
     app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
-    ratelimit_storage_url = os.getenv('RATELIMIT_STORAGE_URL')
-    if ratelimit_storage_url:
-        app.config['RATELIMIT_STORAGE_URL'] = ratelimit_storage_url
-    else:
-        app.config['RATELIMIT_STORAGE_URL'] = "memory://"
-        logging.warning(f"Rate limit storage is configured to 'memory://'. This is not suitable for production.")
-    app.config['RATELIMIT_STRATEGY'] = "fixed-window"
     app.config['RATELIMIT_ENABLED'] = False # Toggle rate limits on/off
+    if app.config['RATELIMIT_ENABLED']:
+        app.config['RATELIMIT_STRATEGY'] = "fixed-window"
+        ratelimit_storage_url = os.getenv('RATELIMIT_STORAGE_URL')
+        if ratelimit_storage_url:
+            app.config['RATELIMIT_STORAGE_URL'] = ratelimit_storage_url
+        else:
+            app.config['RATELIMIT_STORAGE_URL'] = "memory://"
+            logging.warning(f"Rate limit storage is configured to 'memory://'. This is not suitable for production.")
     return app
 
 # Limiter object used for client rate limits
