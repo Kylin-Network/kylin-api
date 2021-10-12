@@ -8,5 +8,6 @@ CREATE TABLE IF NOT EXISTS parachain_data (
   processed_timestamp timestamp,
   payload varchar,
   feed_name varchar,
-  url varchar
+  url varchar,
+  hash varchar
 );

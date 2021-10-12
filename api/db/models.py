@@ -16,6 +16,7 @@ class ParachainDB(db.Model):
     payload = db.Column(db.String)
     feed_name = db.Column(db.String)
     url = db.Column(db.String)
+    hash = db.Column(db.String)
 
     @classmethod
     def select_all(self):
@@ -61,7 +62,8 @@ class ParachainDB(db.Model):
             processed_timestamp=data_request.processed_timestamp,
             payload=data_request.payload,
             feed_name=data_request.feed_name,
-            url = data_request.url
+            url = data_request.url,
+            hash = data_request.hash
         )
         db.session.add(insert)
         db.session.commit()
