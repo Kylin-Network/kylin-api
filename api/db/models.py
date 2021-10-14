@@ -22,31 +22,39 @@ class ParachainDB(db.Model):
     def select_all(self):
         # query_with_sql = db.engine.execute("SELECT * FROM parachain_data")
         data = ParachainDB.query.all()
-        return convert_model_obj_to_list(data)
+        return self.convert_model_obj_to_list(data)
     
     @classmethod
     def select_all_by_hash(self, hash):
-        feed = db.session.query(ParachainDB) \
-            .filter_by(hash=hash) \
-            .first() \
-            .feed
-        return select_all_by_feed(feed)
+        row = db.session.query(ParachainDB) \
+            .filter_by(hash=hash) 
+
+        data = db.session.query(ParachainDB) \
+            .filter_by(ParachainDB.feed_name==row.feed_name, ParachainDB.processed_timestamp <=row.processed_timestamp) \
+            .order_by(ParachainDB.id) \
+            .all()
+        return self.convert_model_obj_to_list(data)
 
     @classmethod
-    def select_all_by_feed(self, feed):
+    def select_all_by_feed_name(self, feed_name):
         data = db.session.query(ParachainDB) \
-            .filter_by(feed=feed) \
-            .order_by(ParachainDB.block) \
+            .filter_by(feed_name=feed_name) \
+            .order_by(ParachainDB.id) \
             .all()
-        return convert_model_obj_to_list(data)
+        return self.convert_model_obj_to_list(data)
 
     @classmethod
     def convert_model_obj_to_list(self, model):
         payload = [{
-            "feed":row.feed,
-            "block": row.block,
-            "hash": row.hash,
-            "data": json.loads(row.data)
+            "para_id":row.para_id,
+            "account_id":row.account_id,
+            "requested_block_number":row.requested_block_number,
+            "processed_block_number":row.processed_block_number,
+            "requested_timestamp":row.requested_timestamp,
+            "processed_timestamp":row.processed_timestamp,
+            "payload": json.loads(row.payload),
+            "feed_name":row.feed_name,
+            "hash":row.hash,
             } for row in model
         ]
         return payload

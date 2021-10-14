@@ -51,12 +51,9 @@ class SubmitData(Resource):
 
 @api.route('/query', endpoint='query')
 @api.param('hash', "Used to query data related to the hash's feed name.")
-@api.param('feed', 'Used to query data related to the feed name. If both hash and feed are passed, feed is default.')
 class QueryData(Resource):
     def get(self):
-        if "feed" in request.args:
-            results = ParachainDB.select_all_by_feed(request.args["feed"])
-        elif "hash" in request.args:
+        if "hash" in request.args:
             results = ParachainDB.select_all_by_hash(request.args["hash"])
         else:
             raise InvalidQueryParam(payload=request.args)
