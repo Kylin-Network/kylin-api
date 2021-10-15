@@ -23,15 +23,16 @@ class ParachainDB(db.Model):
         # query_with_sql = db.engine.execute("SELECT * FROM parachain_data")
         data = ParachainDB.query.all()
         return self.convert_model_obj_to_list(data)
-    
+
     @classmethod
     def select_all_by_hash(self, hash):
         row = db.session.query(ParachainDB) \
-            .filter_by(hash=hash) 
+            .filter_by(hash=hash) \
+            .first()
 
         data = db.session.query(ParachainDB) \
-            .filter_by(ParachainDB.feed_name==row.feed_name, ParachainDB.processed_timestamp <=row.processed_timestamp) \
-            .order_by(ParachainDB.id) \
+            .filter(ParachainDB.feed_name == row.feed_name, ParachainDB.processed_timestamp <= row.processed_timestamp) \
+            .order_by(ParachainDB.id.desc()) \
             .all()
         return self.convert_model_obj_to_list(data)
 
