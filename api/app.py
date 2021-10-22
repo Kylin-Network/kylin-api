@@ -37,29 +37,23 @@ class Prices(Resource):
 
 @api.route('/submit', endpoint='submit')
 @api.param('data', 'JSON data to store.')
-@api.param('hash', 'Hash of data written on-chain.')
-@api.param('feed', 'Feed name of which hash is referenced to on-chain.')
-@api.param('block', 'Block number which hash is written to.')
 class SubmitData(Resource):
     def post(self):
         if not request.is_json:
             raise InvalidContentType(payload=request.content_type)
         try:
-            kwargs = request.get_json()
-            store = DataStore(**kwargs)
-        except:
-            raise InvalidSubmitParam()
+            body = request.get_json()
+            store = DataStore(body)
+        except Exception as ex:
+            raise InvalidSubmitParam(ex)
         ParachainDB.insert_new_row(store)
         return make_response({"message":"Data submitted successfully."}, 200)
 
 @api.route('/query', endpoint='query')
 @api.param('hash', "Used to query data related to the hash's feed name.")
-@api.param('feed', 'Used to query data related to the feed name. If both hash and feed are passed, feed is default.')
 class QueryData(Resource):
     def get(self):
-        if "feed" in request.args:
-            results = ParachainDB.select_all_by_feed(request.args["feed"])
-        elif "hash" in request.args:
+        if "hash" in request.args:
             results = ParachainDB.select_all_by_hash(request.args["hash"])
         else:
             raise InvalidQueryParam(payload=request.args)

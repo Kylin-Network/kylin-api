@@ -132,6 +132,6 @@ dmypy.json
 .pyre/
 
 .idea/*
-
+.vscode/*
 
 *.DS_Store
