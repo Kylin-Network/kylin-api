@@ -15,6 +15,7 @@ docker-compose up -d
 This will start two Docker containers:
 - kylin-api: [Gunicorn](https://gunicorn.org/) server that wraps the Flask app defined in `api/app.py`
 - postgres: [PostgreSQL](https://www.postgresql.org/) database
+- postgres-backups: Utility used to create [database backups](https://github.com/prodrigestivill/docker-postgres-backup-local).
 
 You should now be able to send:
 
@@ -96,3 +97,17 @@ http://localhost:8080/
 You can see the API's specification and try it directly from the swagger UI.  
 
 Inside the `default namespace` you will see the list of the endpoints available. You can test them using the `try_out` button.
+
+## Restoring the Database
+Restore Locally
+- Replace the backupfile name from the following command:
+```bash 
+gunzip -c BACKUPFILE.sql.gz | docker exec --interactive postgres psql --username=postgres --dbname=kylin_parachain -W
+```
+
+Restore to Remote Server
+- Replace the backupfile name, $HOSTNAME and $PORT from the following command:
+```bash 
+docker run --rm --tty --interactive -v $BACKUPFILE:BACKUPFILE.sql.gz postgres:13.2 /bin/sh -c "zcat BACKUPFILE.sql.gz | psql --host=$HOSTNAME --port=$PORT --username=postgres --dbname=kylin_parachain -W"
+```
+More on restoring a backup can be found [here](https://github.com/prodrigestivill/docker-postgres-backup-local). 
