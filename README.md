@@ -12,9 +12,10 @@ To run the server with Docker, you'll need to [install Docker](https://www.docke
 docker-compose up -d
 ```
 
-This will start two Docker containers:
+This will start three Docker containers:
 - kylin-api: [Gunicorn](https://gunicorn.org/) server that wraps the Flask app defined in `api/app.py`
 - postgres: [PostgreSQL](https://www.postgresql.org/) database
+- postgres-backups: Container pushing database backups to an S3 bucket
 
 You should now be able to send:
 
@@ -96,3 +97,9 @@ http://localhost:8080/
 You can see the API's specification and try it directly from the swagger UI.  
 
 Inside the `default namespace` you will see the list of the endpoints available. You can test them using the `try_out` button.
+
+## Restoring the Database
+From specific timestamp
+```bash
+docker exec postgres-backups sh restore.sh <timestamp>
+```
