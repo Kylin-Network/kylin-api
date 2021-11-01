@@ -2,6 +2,7 @@ from api.sources import source_config
 from api.sources.generic_source import GenericSource
 import requests
 from datetime import datetime
+from os import getenv
 
 class CryptoWatch(GenericSource):
     def __init__(self):
@@ -11,7 +12,9 @@ class CryptoWatch(GenericSource):
 
     def get_prices(self,currency_pairs):
         url = self.template_url
-        all_markets = requests.get(url).json()
+        all_markets = requests.get(
+            url=url,
+            headers={"X-CW-API-Key": getenv("CRYPTOWATCH_PUBLIC_KEY")}).json()
         full_response = []
         for currency_pair in currency_pairs.split(","):
             if not self._is_valid_currency_pair(currency_pair): continue
