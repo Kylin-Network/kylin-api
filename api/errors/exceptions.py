@@ -37,4 +37,14 @@ class InvalidQueryParam(Exception):
         self.message = message
         self.status_code = status_code
         self.payload = payload
+
+class InvalidPayload(Exception):
+    def __init__(self,
+            message="Payload is not valid JSON",
+            status_code=422,
+            payload=None):
+        super().__init__(message)
+        self.message = message
+        self.status_code = status_code
+        self.payload = payload
         

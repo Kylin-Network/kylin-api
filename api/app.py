@@ -39,13 +39,14 @@ class Prices(Resource):
 @api.param('data', 'JSON data to store.')
 class SubmitData(Resource):
     def post(self):
-        if not request.is_json:
-            raise InvalidContentType(payload=request.content_type)
         try:
             body = request.get_json()
             store = DataStore(body)
         except Exception as ex:
-            raise InvalidSubmitParam(ex)
+            if isinstance(ex, InvalidPayload):
+                raise ex
+            else:
+                raise InvalidSubmitParam(ex)
         ParachainDB.insert_new_row(store)
         return make_response({"message":"Data submitted successfully."}, 200)
 
