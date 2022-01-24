@@ -36,7 +36,7 @@ class Prices(Resource):
         else:
             raise InvalidCurrencyPair(payload=currency_pairs)
 
-@api.route('/prices/hist', endpoint='hist')
+@api.route('/prices/hist', endpoint='prices/hist')
 @api.param('currency_pair', 'The currency pair of which to query historical price data.')
 @api.param('before', 'Unix timestamp. Only return candles opening before this time. Example: 1481663244')
 @api.param('after', 'Unix timestamp. Only return candles opening after this time. Example 1481663244')

@@ -52,6 +52,9 @@ class CryptoWatch(GenericSource):
 
     def assemble_hist_payload(self, hist_prices, period):
         payload = []
+        if "result" not in hist_prices:
+            return payload
+
         for candle in hist_prices["result"][str(period)]:
             open_time = datetime.fromtimestamp(candle[0]) - timedelta(hours=int(period)//60)
             payload.append({
