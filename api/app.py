@@ -43,7 +43,6 @@ class Prices(Resource):
 @api.param('period', 'Comma separated integers representing seconds. Only return these time periods. Example: 60,180,108000')
 class HistPrices(Resource):
     def get(self):
-        logging.info("TESTING")
         currency_pairs = request.args['currency_pair']
         before = request.args['before']
         after = request.args['after']
