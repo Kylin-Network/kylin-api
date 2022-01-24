@@ -23,6 +23,9 @@ class OracleFramework:
         return full_response
 
     def get_hist_prices(self, currency_pair, before, after, period):
+        if "_" in currency_pair:
+            currency_pair = currency_pair.replace("_", "")
+
         full_response = {}
         full_response['started_at'] = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
         full_response['payload'] = CryptoWatch().get_hist_prices(currency_pair, before, after, period)
