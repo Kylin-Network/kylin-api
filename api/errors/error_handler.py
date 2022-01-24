@@ -23,6 +23,10 @@ def invalid_submit_param_error(error):
 def invalid_json_payload_error(error):
     return {"message": f"'{error.payload}' is not valid JSON format"}, error.status_code
 
+@errors.errorhandler(NoResultsFound)
+def no_results_found_error(error):
+    return {"message": error.message}, error.status_code
+
 @errors.errorhandler(Exception)
 def server_error(error):
     return {"message": f"Oops, got an error! {error}"}, 500

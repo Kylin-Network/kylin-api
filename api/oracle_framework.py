@@ -22,8 +22,18 @@ class OracleFramework:
         full_response['completed_at'] = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
         return full_response
 
+    def get_hist_prices(self, currency_pair, before, after, period):
+        if "_" in currency_pair:
+            currency_pair = currency_pair.replace("_", "")
+
+        full_response = {}
+        full_response['started_at'] = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+        full_response['payload'] = CryptoWatch().get_hist_prices(currency_pair, before, after, period)
+        full_response['completed_at'] = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+        return full_response
+
     def has_results(self, full_response):
         """
-        Helper function used to determine if list returned from OracleFramework.get_prices() contains price data or not
+        Helper function used to determine if list returned from OracleFramework contains price data or not
         """
         return True if full_response["payload"] else False

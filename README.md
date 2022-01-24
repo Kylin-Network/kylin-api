@@ -53,9 +53,14 @@ bash bin/run.sh
 You should now be able to interact with your server as described above.
 
 ## Example Calls
-Get price feed:
+Get current price data:
 ```bash
 curl "http://localhost:8080/prices?currency_pairs=btc_usd"
+```
+
+Get historical price data:
+```bash
+curl "http://localhost:8080/prices/hist?currency_pair=ethusd&before=1642438800&after=1642352400&period=180"
 ```
 
 Write to database:
