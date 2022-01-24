@@ -50,7 +50,10 @@ class HistPrices(Resource):
         period = request.args['period']
 
         prices = oracle_framework.get_hist_prices(currency_pairs, before, after, period)
-        return make_response(prices, 200)
+        if oracle_framework.has_results(prices):
+            return make_response(prices, 200)
+        else:
+            raise NoResultsFound()
 
 @api.route('/submit', endpoint='submit')
 @api.param('data', 'JSON data to store.')
