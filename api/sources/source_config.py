@@ -14,6 +14,7 @@ sources = dict(
   cryptowatch = dict(
     source_name = "cryptowatch",
     url = "https://api.cryptowat.ch/markets/prices",
+    hist_url = "https://api.cryptowat.ch/markets/coinbase-pro/CURRENCY_PAIR/ohlc?before=BEFORE_TS&after=AFTER_TS&periods=PERIOD_SECONDS",
   ),
   bancor = dict(
     source_name = "bancor",

@@ -7,6 +7,7 @@ from api.db.data_store import DataStore
 from api.db.models import db, ParachainDB
 from api.api import api
 import os
+import logging
 
 app = Flask(__name__)
 cors = CORS(app)
@@ -34,6 +35,22 @@ class Prices(Resource):
             return make_response(prices, 200)
         else:
             raise InvalidCurrencyPair(payload=currency_pairs)
+
+@api.route('/prices/hist', endpoint='hist')
+@api.param('currency_pair', 'The currency pair of which to query historical price data.')
+@api.param('before', 'Unix timestamp. Only return candles opening before this time. Example: 1481663244')
+@api.param('after', 'Unix timestamp. Only return candles opening after this time. Example 1481663244')
+@api.param('period', 'Comma separated integers representing seconds. Only return these time periods. Example: 60,180,108000')
+class HistPrices(Resource):
+    def get(self):
+        logging.info("TESTING")
+        currency_pairs = request.args['currency_pair']
+        before = request.args['before']
+        after = request.args['after']
+        period = request.args['period']
+
+        prices = oracle_framework.get_hist_prices(currency_pairs, before, after, period)
+        return make_response(prices, 200)
 
 @api.route('/submit', endpoint='submit')
 @api.param('data', 'JSON data to store.')
