@@ -60,8 +60,12 @@ curl "http://localhost:8080/prices?currency_pairs=btc_usd"
 
 Get historical price data:
 ```bash
-curl "http://localhost:8080/prices/hist?currency_pair=ethusd&before=1642438800&after=1642352400&period=180"
+curl "http://api.kylin-node.co.uk/prices/hist?currency_pair=eth_usd&before=1642438800&after=1642352400&period=300"
 ```
+- currency_pair: currency pair to query price data for
+- after: Timestamp to return candles opening after this time
+- before: Timestamp to return candles opening before this time
+- periods: Comma separated integers representing seconds. Only return these time periods. (60,180,300)
 
 Write to database:
 ```bash
