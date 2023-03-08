@@ -1,4 +1,4 @@
-FROM python:3.7.8-slim
+FROM python:3.12.0a5-slim
 
 COPY requirements/common.txt requirements/common.txt
 RUN pip install -U pip && pip install -r requirements/common.txt
