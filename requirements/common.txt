@@ -5,3 +5,4 @@ flask-restx
 flask-cors
 flask-sqlalchemy
 psycopg2-binary
+urllib3>=2.6.0 # not directly required, pinned by Snyk to avoid a vulnerability
